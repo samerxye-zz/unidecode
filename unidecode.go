@@ -1,5 +1,5 @@
 // Package unidecode implements a unicode transliterator
-// which replaces non-ASCII characters with their ASCII
+// which replaces non-GSM characters with their GSM
 // approximations.
 package unidecode
 
@@ -18,12 +18,12 @@ var (
 )
 
 // Unidecode implements a unicode transliterator, which
-// replaces non-ASCII characters with their ASCII
+// replaces non-GSM characters with their GSM
 // counterparts.
 // Given an unicode encoded string, returns
 // another string with non-ASCII characters replaced
-// with their closest ASCII counterparts.
-// e.g. Unicode("áéíóú") => "aeiou"
+// with their closest GSM counterparts.
+// e.g. Unidecode("áéíóú") => "aéiou"
 func Unidecode(s string) string {
 	decodingOnce.Do(decodeTransliterations)
 	l := len(s)
@@ -38,10 +38,6 @@ func Unidecode(s string) string {
 		}
 	}
 	for _, c := range s {
-		if c <= unicode.MaxASCII {
-			r = append(r, c)
-			continue
-		}
 		if c > unicode.MaxRune || c > transCount {
 			/* Ignore reserved chars */
 			continue
